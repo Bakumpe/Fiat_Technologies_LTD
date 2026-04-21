@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./Homepage.css";
+import "./HomePage.css";
 
 /* ── Data ─────────────────────────────────────────────────────────────────── */
 

@@ -1,0 +1,168 @@
+/* ============================================================================
+   AppShell.css (Refined)
+   ────────────────────────────────────────────────────────────────────────────
+   Sticky Navbar + Fluid Main + Anchored Footer
+   Token-driven, responsive, safe-area aware
+   ============================================================================ */
+
+/* ── Navbar height token (single source of truth) ─────────────────────────── */
+
+:root {
+    --shell-navbar-h: 40px;
+  
+    /* Layout container width (align with design system rhythm) */
+    --shell-max-width: ;
+  }
+  
+  /* ── Shell root ───────────────────────────────────────────────────────────── */
+  
+  .shell {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+  
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+  }
+  
+  /* ── Navbar ───────────────────────────────────────────────────────────────── */
+  
+  .shell__navbar {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+  
+    height: var(--shell-navbar-h);
+    width: 100%;
+  
+    display: flex;
+    align-items: center;
+  
+    /* Use dark surface (your system clearly defines this for nav) */
+    background-color: var(--color-dark-surface);
+    border-bottom: 1px solid var(--color-dark-border);
+    box-shadow: var(--shadow-dark);
+  }
+  
+  /* ── Main ─────────────────────────────────────────────────────────────────── */
+  
+  .shell__main {
+    flex: 1;
+    width: 100%;
+  
+    /* Prevent sticky overlap issues */
+    padding-top: var(--shell-navbar-h);
+  
+    /* Horizontal rhythm */
+    padding-inline: var(--space-xl);
+  
+    /* Vertical rhythm */
+    padding-bottom: var(--space-huge);
+  
+    /* Centered container */
+    max-width: var(--shell-max-width);
+    margin-inline: auto;
+  }
+  
+  /* ── Full-bleed sections ─────────────────────────────────────────────────── */
+  
+  .shell__full-bleed {
+    position: relative;
+  
+    /* Break out of container safely */
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+  
+    width: 100vw;
+  }
+  
+  /* ── Footer ──────────────────────────────────────────────────────────────── */
+  
+  .shell__footer {
+    width: 100%;
+  
+    /* Dark surface fits your system better than light here */
+    background: var(--gradient-dark);
+    border-top: 1px solid var(--color-dark-border);
+  
+    padding: var(--space-xxl) var(--space-xl);
+  
+    max-width: var(--shell-max-width);
+    margin-inline: auto;
+  }
+  
+  /* ============================================================================
+     RESPONSIVE
+     ============================================================================ */
+  
+  /* ── Mobile ──────────────────────────────────────────────────────────────── */
+  
+  @media (max-width: 639px) {
+    :root {
+      --shell-navbar-h: 56px;
+    }
+  
+    .shell__main {
+      padding-inline: var(--space-lg);
+  
+      /* Safe-area aware bottom padding (iOS) */
+      padding-bottom: calc(
+        var(--space-xxl) + env(safe-area-inset-bottom, 0px)
+      );
+    }
+  
+    .shell__footer {
+      padding: var(--space-xl) var(--space-lg);
+    }
+  }
+  
+  /* ── Tablet ─────────────────────────────────────────────────────────────── */
+  
+  @media (min-width: 640px) and (max-width: 1023px) {
+    :root {
+      --shell-navbar-h: 60px;
+    }
+  
+    .shell__main {
+      padding-inline: var(--space-xxl);
+    }
+  
+    .shell__footer {
+      padding: var(--space-xxl);
+    }
+  }
+  
+  /* ── Desktop ────────────────────────────────────────────────────────────── */
+  
+  @media (min-width: 1024px) {
+    :root {
+      --shell-navbar-h: 54px;
+    }
+  
+    .shell__main {
+      padding-inline: var(--space-xxxl);
+    }
+  
+    .shell__footer {
+      padding-inline: var(--space-xxxl);
+    }
+  }
+  
+  /* ============================================================================
+     PRINT
+     ============================================================================ */
+  
+  @media print {
+    .shell__navbar,
+    .shell__footer {
+      display: none;
+    }
+  
+    .shell__main {
+      padding: 0;
+      max-width: 100%;
+    }
+  }

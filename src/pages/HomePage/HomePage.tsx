@@ -1,262 +1,17 @@
 import { useState } from "react";
 import "./HomePage.css";
+import {SERVICES, STATS, TESTIMONIALS} from "../../Constants/Constants";
 
-/* ── Data ─────────────────────────────────────────────────────────────────── */
-
-const NAV_LINKS = ["Services", "Projects", "About", "Blog", "Contact"];
-
-const SERVICES = [
-  {
-    id: "software",
-    chipClass: "chip-svc-software",
-    accentClass: "accent-software",
-    cardAccent: "card-accent-software",
-    bgClass: "bg-svc-software",
-    icon: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.8}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <polyline points="16 18 22 12 16 6" />
-        <polyline points="8 6 2 12 8 18" />
-      </svg>
-    ),
-    tag: "Software Development",
-    title: "Custom Software Solutions",
-    description:
-      "Full-cycle engineering from architecture to deployment. We build scalable web platforms, APIs, and internal tools tailored to your operational needs.",
-    features: ["Web & Mobile Apps", "API Integration", "Cloud Architecture"],
-    stat: "200+",
-    statLabel: "Projects Delivered",
-  },
-  {
-    id: "install",
-    chipClass: "chip-svc-install",
-    accentClass: "accent-install",
-    cardAccent: "card-accent-install",
-    bgClass: "bg-svc-install",
-    icon: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.8}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-        <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-        <line x1={12} y1={22.08} x2={12} y2={12} />
-      </svg>
-    ),
-    tag: "Software Installation",
-    title: "Professional Setup & Deployment",
-    description:
-      "End-to-end software installation, configuration, and onboarding. We handle enterprise rollouts, licensing, and staff training seamlessly.",
-    features: ["ERP & CRM Rollouts", "OS Configuration", "Staff Onboarding"],
-    stat: "500+",
-    statLabel: "Systems Configured",
-  },
-  {
-    id: "cctv",
-    chipClass: "chip-svc-cctv",
-    accentClass: "accent-cctv",
-    cardAccent: "card-accent-cctv",
-    bgClass: "bg-svc-cctv",
-    icon: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.8}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M23 7l-7 5 7 5V7z" />
-        <rect x={1} y={5} width={15} height={14} rx={2} ry={2} />
-      </svg>
-    ),
-    tag: "CCTV & Security",
-    title: "Security Camera Systems",
-    description:
-      "Intelligent surveillance infrastructure for offices, warehouses, and commercial spaces. Remote monitoring, AI detection, and 24/7 footage management.",
-    features: [
-      "IP Camera Networks",
-      "Remote Monitoring",
-      "AI Motion Detection",
-    ],
-    stat: "1,000+",
-    statLabel: "Cameras Installed",
-  },
-  {
-    id: "hardware",
-    chipClass: "chip-svc-hardware",
-    accentClass: "accent-hardware",
-    cardAccent: "card-accent-hardware",
-    bgClass: "bg-svc-hardware",
-    icon: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.8}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <rect x={4} y={4} width={16} height={16} rx={2} />
-        <rect x={9} y={9} width={6} height={6} />
-        <line x1={9} y1={1} x2={9} y2={4} />
-        <line x1={15} y1={1} x2={15} y2={4} />
-        <line x1={9} y1={20} x2={9} y2={23} />
-        <line x1={15} y1={20} x2={15} y2={23} />
-        <line x1={20} y1={9} x2={23} y2={9} />
-        <line x1={20} y1={14} x2={23} y2={14} />
-        <line x1={1} y1={9} x2={4} y2={9} />
-        <line x1={1} y1={14} x2={4} y2={14} />
-      </svg>
-    ),
-    tag: "Hardware & Accessories",
-    title: "Hardware Procurement & Supply",
-    description:
-      "Sourcing, procurement, and supply of enterprise-grade hardware — servers, workstations, networking gear, and peripherals at competitive prices.",
-    features: ["Servers & Workstations", "Network Equipment", "Peripherals"],
-    stat: "50+",
-    statLabel: "Trusted Vendors",
-  },
-  {
-    id: "support",
-    chipClass: "chip-svc-support",
-    accentClass: "accent-support",
-    cardAccent: "card-accent-support",
-    bgClass: "bg-svc-support",
-    icon: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.8}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-      </svg>
-    ),
-    tag: "Maintenance & Support",
-    title: "Managed IT Support",
-    description:
-      "Proactive maintenance contracts and responsive helpdesk support. We keep your systems healthy so your team can focus on what matters.",
-    features: ["24/7 Helpdesk", "Preventive Maintenance", "SLA Guarantees"],
-    stat: "99.8%",
-    statLabel: "Uptime Achieved",
-  },
-];
-
-const STATS = [
-  { value: "8+", label: "Years in Operation" },
-  { value: "350+", label: "Active Clients" },
-  { value: "1,700+", label: "Projects Completed" },
-  { value: "99.8%", label: "Client Satisfaction" },
-];
-
-const TESTIMONIALS = [
-  {
-    name: "Amara Osei",
-    role: "CTO, NovaCorp Uganda",
-    text: "Fiat Technologies delivered our entire ERP rollout on time and on budget. Their hardware team and software engineers worked as one unit — rare and impressive.",
-    rating: 5,
-  },
-  {
-    name: "Sandra Mukasa",
-    role: "Director of Operations, SafeHaven Properties",
-    text: "The CCTV installation across our 12 sites was flawless. Remote monitoring works perfectly and the team's support response time is exceptional.",
-    rating: 5,
-  },
-  {
-    name: "James Kiprotich",
-    role: "Head of IT, Meridian Bank",
-    text: "We've relied on Fiat Technologies for over 4 years for all our maintenance contracts. Consistent, professional, and genuinely expert.",
-    rating: 5,
-  },
-];
 
 /* ── Component ────────────────────────────────────────────────────────────── */
 
 export default function Homepage() {
   const [activeService, setActiveService] = useState("software");
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   const active = SERVICES.find((s) => s.id === activeService)!;
+
 
   return (
     <div className="hp-root">
-      {/* ── NAV ──────────────────────────────────────────────────────────── */}
-      <nav className="hp-nav">
-        <div className="hp-nav-inner">
-          <div className="hp-nav-brand">
-            <div className="hp-nav-logo">
-              <span className="hp-logo-f">F</span>
-            </div>
-            <div>
-              <span className="text-wordmark">Fiat Technologies</span>
-              <p className="text-tagline" style={{ marginTop: 1 }}>
-                Precision. Performance. Trust.
-              </p>
-            </div>
-          </div>
-
-          <ul className="hp-nav-links">
-            {NAV_LINKS.map((l) => (
-              <li key={l}>
-                <a href="#" className="hp-nav-link">
-                  {l}
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          <div className="hp-nav-actions">
-            <a href="#" className="btn btn-outline-dark btn-sm">
-              Sign In
-            </a>
-            <a href="#" className="btn btn-primary btn-sm">
-              Get a Quote
-            </a>
-          </div>
-
-          <button
-            className="hp-hamburger"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            <span />
-            <span />
-            <span />
-          </button>
-        </div>
-
-        {mobileMenuOpen && (
-          <div className="hp-mobile-menu">
-            {NAV_LINKS.map((l) => (
-              <a key={l} href="#" className="hp-mobile-link">
-                {l}
-              </a>
-            ))}
-            <div className="hp-mobile-actions">
-              <a href="#" className="btn btn-outline-dark btn-sm">
-                Sign In
-              </a>
-              <a href="#" className="btn btn-primary">
-                Get a Quote
-              </a>
-            </div>
-          </div>
-        )}
-      </nav>
-
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="hp-hero">
         <div className="hp-hero-glow" />
@@ -264,16 +19,7 @@ export default function Homepage() {
 
         <div className="hp-hero-inner">
           <div className="hp-hero-content">
-            {/* <div className="hp-hero-eyebrow">
-              <span className="status-dot status-dot-online pulse" />
-              <span
-                className="text-mono-sm"
-                style={{ color: "var(--color-brand)" }}
-              >
-                Serving East Africa since 2016
-              </span>
-            </div> */}
-
+            
             <h1 className="hp-hero-title">
               Technology that
               <br />
@@ -304,17 +50,17 @@ export default function Homepage() {
                 </svg>
               </a>
               <a href="#" className="btn btn-outline-dark btn-lg">
-                View Case Studies
+                Reach Out
               </a>
             </div>
 
-            {/* <div className="hp-hero-chips">
+            <div className="hp-hero-chips">
               {SERVICES.map((s) => (
                 <span key={s.id} className={`chip ${s.chipClass} hp-hero-chip`}>
                   {s.tag}
                 </span>
               ))}
-            </div> */}
+            </div>
           </div>
 
           <div className="hp-hero-visual">
@@ -364,7 +110,6 @@ export default function Homepage() {
           <div key={i} className="hp-stat-item">
             <span
               className="text-display"
-              style={{ color: "var(--color-brand)" }}
             >
               {s.value}
             </span>
@@ -441,7 +186,7 @@ export default function Homepage() {
               ))}
             </ul>
 
-            <a href="#" className="btn btn-primary" style={{ marginTop: 24 }}>
+            <a href="/services" className="btn btn-primary" style={{ marginTop: 24 }}>
               Learn More
               <svg
                 width={16}
@@ -480,35 +225,6 @@ export default function Homepage() {
           </div>
         </div>
 
-        {/* Card Grid */}
-        <div className="hp-svc-grid">
-          {SERVICES.map((s) => (
-            <div
-              key={s.id}
-              className={`card-service hp-svc-card ${activeService === s.id ? "hp-svc-card--active" : ""}`}
-              onClick={() => setActiveService(s.id)}
-            >
-              <div className={`hp-svc-card-icon ${s.bgClass}`}>
-                <span className={s.accentClass}>{s.icon}</span>
-              </div>
-              <span className={`chip ${s.chipClass}`} style={{ marginTop: 16 }}>
-                {s.tag}
-              </span>
-              <h4 className="text-h3" style={{ marginTop: 12 }}>
-                {s.title}
-              </h4>
-              <p className="text-body-sm" style={{ marginTop: 8 }}>
-                {s.description.slice(0, 90)}…
-              </p>
-              <div className="hp-svc-card-footer">
-                <span className="text-mono-bold">{s.stat}</span>
-                <span className="text-caption" style={{ marginLeft: 6 }}>
-                  {s.statLabel}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
       </section>
 
       {/* ── WHY FIAT ─────────────────────────────────────────────────────── */}
@@ -650,116 +366,7 @@ export default function Homepage() {
             </a>
           </div>
         </div>
-      </section>
-
-      {/* ── FOOTER ───────────────────────────────────────────────────────── */}
-      <footer className="hp-footer bg-dark">
-        <div className="hp-footer-inner">
-          <div className="hp-footer-brand">
-            <div className="hp-nav-brand" style={{ marginBottom: 12 }}>
-              <div className="hp-nav-logo">
-                <span className="hp-logo-f">F</span>
-              </div>
-              <span className="text-wordmark">Fiat Technologies</span>
-            </div>
-            <p
-              className="text-body-sm"
-              style={{ color: "var(--color-dark-muted)", maxWidth: 240 }}
-            >
-              Precision technology solutions for modern enterprises across East
-              Africa.
-            </p>
-            <div className="hp-footer-status">
-              <span className="status-dot status-dot-online pulse" />
-              <span
-                className="text-mono-sm"
-                style={{ color: "var(--color-success)" }}
-              >
-                All systems operational
-              </span>
-            </div>
-          </div>
-
-          <div className="hp-footer-links">
-            <div className="hp-footer-col">
-              <p
-                className="text-section-header"
-                style={{ color: "var(--color-brand)" }}
-              >
-                Services
-              </p>
-              {SERVICES.map((s) => (
-                <a key={s.id} href="#" className="hp-footer-link">
-                  {s.tag}
-                </a>
-              ))}
-            </div>
-            <div className="hp-footer-col">
-              <p
-                className="text-section-header"
-                style={{ color: "var(--color-brand)" }}
-              >
-                Company
-              </p>
-              {["About Us", "Our Team", "Projects", "Blog", "Careers"].map(
-                (l) => (
-                  <a key={l} href="#" className="hp-footer-link">
-                    {l}
-                  </a>
-                ),
-              )}
-            </div>
-            <div className="hp-footer-col">
-              <p
-                className="text-section-header"
-                style={{ color: "var(--color-brand)" }}
-              >
-                Contact
-              </p>
-              <p
-                className="text-body-sm"
-                style={{ color: "var(--color-dark-muted)" }}
-              >
-                info@fiattechnologies.com
-              </p>
-              <p
-                className="text-body-sm"
-                style={{ color: "var(--color-dark-muted)", marginTop: 6 }}
-              >
-                +256 700 000 000
-              </p>
-              <p
-                className="text-body-sm"
-                style={{ color: "var(--color-dark-muted)", marginTop: 6 }}
-              >
-                Kampala, Uganda
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <hr
-          className="divider-dark"
-          style={{ margin: "0 var(--space-xxxl)" }}
-        />
-        <div className="hp-footer-bottom">
-          <p
-            className="text-caption"
-            style={{ color: "var(--color-dark-muted)" }}
-          >
-            © 2026 Fiat Technologies LTD. All rights reserved.
-          </p>
-          <div className="hp-footer-legal">
-            {["Privacy Policy", "Terms of Service", "Cookie Policy"].map(
-              (l) => (
-                <a key={l} href="#" className="hp-footer-link text-caption">
-                  {l}
-                </a>
-              ),
-            )}
-          </div>
-        </div>
-      </footer>
+      </section>      
     </div>
   );
 }

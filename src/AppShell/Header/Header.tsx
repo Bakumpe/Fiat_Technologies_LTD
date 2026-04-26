@@ -8,6 +8,39 @@ export default function Header() {
 
   return (
     <>
+      {mobileMenuOpen && (
+        <div
+          className="hp-mobile-backdrop"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+  
+      {mobileMenuOpen && (
+        <div className="hp-mobile-menu">
+          {NAV_LINKS.map((l) => (
+            <NavLink
+              key={l.link}
+              to={l.link}
+              className={({ isActive }) =>
+                `hp-mobile-link ${isActive ? "active" : ""}`
+              }
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {l.name}
+            </NavLink>
+          ))}
+  
+          <div className="hp-mobile-actions">
+            <NavLink to="/signin" className="btn btn-outline-dark btn-sm">
+              Sign In
+            </NavLink>
+            <NavLink to="/quote" className="btn btn-primary">
+              Get a Quote
+            </NavLink>
+          </div>
+        </div>
+      )}
+  
       <nav className="hp-nav">
         <div className="hp-nav-inner">
           <div className="hp-nav-brand">
@@ -21,7 +54,7 @@ export default function Header() {
               </p>
             </div>
           </div>
-
+  
           <ul className="hp-nav-links">
             {NAV_LINKS.map((l) => (
               <li key={l.link}>
@@ -36,16 +69,12 @@ export default function Header() {
               </li>
             ))}
           </ul>
-
+  
           <div className="hp-nav-actions">
-            <a href="#" className="btn btn-outline-dark btn-sm">
-              Sign In
-            </a>
-            <a href="#" className="btn btn-primary btn-sm">
-              Get a Quote
-            </a>
+            <a href="#" className="btn btn-outline-dark btn-sm">Sign In</a>
+            <a href="#" className="btn btn-primary btn-sm">Get a Quote</a>
           </div>
-
+  
           <button
             className="hp-hamburger"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -56,32 +85,6 @@ export default function Header() {
             <span />
           </button>
         </div>
-
-        {mobileMenuOpen && (
-          <div className="hp-mobile-menu">
-            {NAV_LINKS.map((l) => (
-              <NavLink
-                key={l.link}
-                to={l.link}
-                className={({ isActive }) =>
-                  `hp-mobile-link ${isActive ? "active" : ""}`
-                }
-                onClick={() => setMobileMenuOpen(false)} // closes menu on click
-              >
-                {l.name}
-              </NavLink>
-            ))}
-
-            <div className="hp-mobile-actions">
-              <NavLink to="/signin" className="btn btn-outline-dark btn-sm">
-                Sign In
-              </NavLink>
-              <NavLink to="/quote" className="btn btn-primary">
-                Get a Quote
-              </NavLink>
-            </div>
-          </div>
-        )}
       </nav>
     </>
   );

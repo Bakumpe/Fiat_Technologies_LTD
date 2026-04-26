@@ -1,4 +1,5 @@
 import { SERVICES} from "../../Constants/Constants";
+import "./Footer.css"
 
 export default function Footer(){
 
